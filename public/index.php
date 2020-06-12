@@ -35,7 +35,7 @@ $app->any('webhook', function() {
     $queue->reply("mis opciones");
   });
   $queue->hears(function($n) {
-    return strpos($n->rtexto, 'hola') !== false;
+    return strpos($n->text, 'hola') !== false;
   }, function($queue) {
     $queue->reply('Hola! ¿En qué podemos ayudarte?');
   });
@@ -43,7 +43,7 @@ $app->any('webhook', function() {
   $message = json_decode(file_get_contents("php://input"), true);
   $msg = new class {
     public $chat_id;
-    public $rtexto;
+    public $text;
     public function reply($txt) {
       $token = '1247324805:AAFFOlNSgpPCWS2D-GmtyattJe0a3oGZ9yQ';
       $url   = 'https://api.telegram.org/bot' . $token . '/sendMessage';
@@ -55,7 +55,7 @@ $app->any('webhook', function() {
     }
   };
   $msg->chat_id = $message['message']['chat']['id'];
-  $msg->rtexto  = $message['message']['text'];
+  $msg->text  = $message['message']['text'];
   Bot::listen(1, $msg);
 
   Formity::delete('persona');
